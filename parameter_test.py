@@ -16,7 +16,7 @@ matplotlib.use('agg')
 
 
 
-def train(datasAux, colsvanos, VANO, jumps, save_path, save):
+def train(datasAux, poles, VANO, jumps, save_path, save):
     scores_fused, scores_alone, scores_structure = [], [], []
     instances = []
     similarsdf0 = []
@@ -31,8 +31,8 @@ def train(datasAux, colsvanos, VANO, jumps, save_path, save):
         # datat0 = dfs_andoain['abril2022'].iloc[:n,1:]
         # data0_test = dfs_andoain['abril2022'].iloc[2000:,1:]
 
-        datat0 = dfs_bilbao[VANO].iloc[:niter, colsvanos]
-        data0_test = dfs_bilbao[VANO].iloc[3000:, colsvanos]
+        datat0 = dfs_bilbao[VANO].iloc[:n, poles]
+        data0_test = dfs_bilbao[VANO].iloc[3000:, poles]
 
 
         # model of transfer learning
@@ -92,8 +92,9 @@ if __name__ == '__main__':
     main_path='./data'
     dfs_andoain = {}
     dfs_bilbao = {}
-    
-    
+    colsnames = ['NAT_FREQ_1','NAT_FREQ_2','NAT_FREQ_3','NAT_FREQ_4','NAT_FREQ_5',
+                 'DAMP_1','DAMP_2','DAMP_3','DAMP_4','DAMP_5',]
+
     path = [fold for fold in os.listdir(main_path)]
     path_andoain = [os.path.join(main_path,path[0],fold) for fold in os.listdir(os.path.join(main_path,path[0]))]
     path_bilbao = [os.path.join("data/bilbao2023/new",fold) for fold in os.listdir("data/bilbao2023/new")]
@@ -107,32 +108,32 @@ if __name__ == '__main__':
     for pth in path_bilbao:
         pth_csv = os.path.join(pth,'result.csv')
         df = get_df_filtered(pth_csv,';','ms')
+        df = df.iloc[:,[6,7,8,9,10,1,2,3,4,5]]
+        df.columns = colsnames
         dfs_bilbao[pth.split('/')[-1]] = df
 
     for pth in path_choco:
         df_choco= get_df_filtered(pth,';','ms')
 
 
-   
-   
-    colsvanos = [6,7,8,9,#10,
-                 1,2,3,4#,5
-                ]
+    
+    poles3 = [0,1,2,5,6,7]
+    poles4 = [0,1,2,3,5,6,7,8]
+
     jumps = 40
     threads = list()
-    for VANO in [#'vano3'
-                #'vano1',
-                'vano2',
-                #'vano3','vano4',
-                'vano5','vano6'
+    for VANO in [
+                'vano1','vano2','vano3',
+                'vano4','vano5','vano6'
                 #'andoain'
                 ]:
         
         datasAux = []
         for n, key in enumerate(dfs_bilbao.keys()):
             if key != VANO:
-                dataf = dfs_bilbao[key].iloc[:3000,colsvanos]
-                datasAux.append(dataf.copy()) 
+                dataf = dfs_bilbao[key].iloc[:3000, poles4]
+                datasAux.append(dataf.copy())  
+                
                 
         
         # andoain = dfs_andoain['abril2022'].iloc[:3000, 1:] #andoain abril 2022
@@ -146,7 +147,7 @@ if __name__ == '__main__':
         #train(datasAux, datafAux, colsvanos, VANO, jumps, save_path, save)
 
 
-        t = threading.Thread(target=train, args=(datasAux, colsvanos, VANO, jumps, save_path, save))
+        t = threading.Thread(target=train, args=(datasAux, poles4, VANO, jumps, save_path, save))
         threads.append(t)
         t.start()
 
