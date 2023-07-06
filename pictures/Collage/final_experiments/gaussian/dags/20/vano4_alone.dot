@@ -1,0 +1,9 @@
+strict digraph "" {
+	NAT_FREQ_1;
+	NAT_FREQ_2 -> DAMP_2;
+	NAT_FREQ_3 -> DAMP_3;
+	NAT_FREQ_4;
+	NAT_FREQ_5 -> DAMP_5;
+	DAMP_1;
+	DAMP_5 -> DAMP_4;
+}

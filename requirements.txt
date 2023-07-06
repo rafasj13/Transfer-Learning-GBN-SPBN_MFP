@@ -19,6 +19,7 @@ pybind11==2.10.4
 pybnesian==0.4.2
 pydot==1.4.2
 pydot-ng==2.0.0
+pygraphviz==1.11
 pyparsing==3.0.9
 python-dateutil==2.8.2
 pytools==2022.1.14

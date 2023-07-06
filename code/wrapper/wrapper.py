@@ -1,7 +1,7 @@
 # ctypes (interfaz con C)
-from ctypes import Structure, pointer, POINTER, c_double, c_long, cast
+from ctypes import POINTER, c_double, c_long, cast
 import ctypes as ct
-from numpy.ctypeslib import load_library, ndpointer
+from numpy.ctypeslib import load_library
 import numpy as np
 
 DOUBLE = ct.c_double

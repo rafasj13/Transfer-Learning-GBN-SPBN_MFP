@@ -1,0 +1,36 @@
+strict digraph "" {
+	NAT_FREQ_1	[fillcolor=gray,
+		style=filled];
+	NAT_FREQ_2	[fillcolor=gray,
+		style=filled];
+	NAT_FREQ_1 -> NAT_FREQ_2;
+	NAT_FREQ_3	[fillcolor=gray,
+		style=filled];
+	NAT_FREQ_1 -> NAT_FREQ_3;
+	NAT_FREQ_4	[fillcolor=gray,
+		style=filled];
+	NAT_FREQ_1 -> NAT_FREQ_4;
+	NAT_FREQ_5	[fillcolor=gray,
+		style=filled];
+	NAT_FREQ_1 -> NAT_FREQ_5;
+	DAMP_1	[fillcolor=gray,
+		style=filled];
+	NAT_FREQ_1 -> DAMP_1;
+	NAT_FREQ_2 -> NAT_FREQ_3;
+	NAT_FREQ_2 -> NAT_FREQ_4;
+	NAT_FREQ_2 -> NAT_FREQ_5;
+	DAMP_2	[fillcolor=gray,
+		style=filled];
+	NAT_FREQ_2 -> DAMP_2;
+	NAT_FREQ_3 -> NAT_FREQ_4;
+	NAT_FREQ_3 -> NAT_FREQ_5;
+	DAMP_3	[fillcolor=gray,
+		style=filled];
+	NAT_FREQ_3 -> DAMP_3;
+	DAMP_4	[fillcolor=gray,
+		style=filled];
+	NAT_FREQ_4 -> DAMP_4;
+	DAMP_5	[fillcolor=gray,
+		style=filled];
+	NAT_FREQ_5 -> DAMP_5;
+}

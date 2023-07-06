@@ -3,7 +3,6 @@
 #include "residuals.h"
 #include <math.h>
 
-//void fastResiduals(double *X, double Z[][3], int ROWS, int ZCOLS, double bandwidth, double *residuals){
 void fastResiduals(struct mystruct_t *data, int ROWS, int ZCOLS, double bandwidth, double *residuals){
   double k;
 

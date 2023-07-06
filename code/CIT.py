@@ -1,11 +1,9 @@
 from itertools import combinations
-from typing import Any
 
 from causallearn.utils.cit import *
 from numpy import ndarray
 import numpy as np
 from scipy.stats import norm
-from scipy import stats
 from .utils import CustomThread
 from .wrapper.wrapper import fastResiduals
 
@@ -45,16 +43,7 @@ class CCI(CIT_Base):
         self.method = 'cci'
         self.alpha = kwargs['alpha']
         self.assert_input_data_is_valid()
-        cci_kwargs = {k: v for k, v in kwargs.items() if k in
-                         ['kernel_type']}
         
-        if cci_kwargs.keys() == 'kernel_type':
-            assert cci_kwargs['kernel_type'] in ['uniform', 'gaussian'], f"{cci_kwargs['kernel_type']} is not a valid type of kernel, \
-                                                                            it must be either uniform or gaussian"
-            self.kernel_type = cci_kwargs['kernel_type']
-        else:
-            self.kernel_type = 'uniform'
-
 
     @staticmethod
     def polyF(X: ndarray, order):
@@ -66,15 +55,6 @@ class CCI(CIT_Base):
         kernel = Kernel(Z)
      
         residuals = fastResiduals(X,Z,kernel.bandwidth)
-        # for i in range(X.shape[0]):
-        #     summ = 0
-        #     weight = 0
-        #     for j in range(X.shape[0]):
-        #         d = np.linalg.norm(Z[i] - Z[j])
-        #         k = kernel.kernel_weight(d, method=self.kernel_type)
-        #         summ += k*X[j]
-        #         weight += k
-        #     residuals.append(X[i] - summ/weight)
 
         return residuals
 
@@ -171,11 +151,11 @@ class CCI(CIT_Base):
         rx = threads[0].value()
         ry = threads[1].value()
 
-        # rx = self.residuals(self.data[:, Xs], self.data[:, condition_set])
-        # ry = self.residuals(self.data[:, Ys], self.data[:, condition_set])
         p = self.independent(rx.ravel(), ry.ravel(), self.data[:, condition_set].T)
         return p
     
+
+
 
 class Kernel:
     def __init__(self, data) -> None:
@@ -185,7 +165,6 @@ class Kernel:
 
         self.bandwidth = self.prepare_kernel()
 
-        # self.gaussian = stats.gaussian_kde(self.data.T, bw_method=self.bandwidth)
 
     def prepare_kernel(self):
         median_diff = abs(self.data-np.median(self.data, axis=0))
@@ -198,14 +177,11 @@ class Kernel:
         
 
 
-    def kernel_weight(self, d, method):
-        
-        if method == 'uniform':
-            if abs(d) <= self.bandwidth:
-                return 1/(2*self.bandwidth)
-            else:
-                return 0
+    def kernel_weight(self, d):
+      
+        if abs(d) <= self.bandwidth:
+            return 1/(2*self.bandwidth)
+        else:
+            return 0
             
-        elif method == 'gaussian':
-                
-                return norm.pdf(d, loc = 0, scale=self.bandwidth)
+   

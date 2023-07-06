@@ -49,13 +49,6 @@ class CausalGraphCustom(CausalGraph):
         if self.testAux[d].method == 'mc_fisherz': return self.testAux[d](i, j, S, self.nx_skel, self.prt_m)
         return self.testAux[d](i,j,S)
         
-
-    
-    
-    
-    
-    
-    
     
     def draw_pydot_graph(self, labels: List[str] | None = None):
         """Draw nx_graph if skel = False and draw nx_skel otherwise"""

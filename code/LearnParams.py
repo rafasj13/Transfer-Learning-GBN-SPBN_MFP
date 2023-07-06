@@ -66,8 +66,6 @@ class ParameterTL:
 
         return meanParamBetas, meanParamVariances
     
-    
-
 
     def spbn_loglinearpool(self, ci):
 
@@ -162,11 +160,9 @@ class ParameterTL:
         target_new = pbn.SemiparametricBN(node_types = self.node_types, nodes=self.dag.nodes())
         for arc in self.dag.arcs():
             target_new.add_arc(arc[0],arc[1])
-
         target_new.fit(self.auxModels[0]['DATA'])
-        
-        for node, nodetype in self.node_types:
 
+        for node, nodetype in self.node_types:
             if type(nodetype)==type(pbn.CKDEType()):
                 joint_kde = meanParameters['joint_kde'][node] 
                 marg_kde = meanParameters['marg_kde'][node]

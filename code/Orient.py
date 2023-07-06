@@ -26,6 +26,37 @@ class OrientMAX:
         self.alpha = alpha
         self.bgKnowledge = background_knowledge
 
+    
+    def orient_by_background_knowledge(self):
+        """
+        orient the direction of edges using background background_knowledge after running skeleton_discovery in PC algorithm
+
+        Parameters
+        ----------
+        cg: a CausalGraph object. Where cg.G.graph[j,i]=1 and cg.G.graph[i,j]=-1 indicates  i -> j ,
+                        cg.G.graph[i,j] = cg.G.graph[j,i] = -1 indicates i -- j,
+                        cg.G.graph[i,j] = cg.G.graph[j,i] = 1 indicates i <-> j.
+        background_knowledge: artificial background background_knowledge
+
+        Returns
+        -------
+
+        """
+        for edge in self.cg.G.get_graph_edges():
+            if self.cg.G.is_undirected_from_to(edge.get_node1(), edge.get_node2()):
+                if self.bgKnowledge.is_forbidden(edge.get_node2(), edge.get_node1()):
+                    self.cg.G.remove_edge(edge)
+                    self.cg.G.add_directed_edge(edge.get_node1(), edge.get_node2())
+                elif self.bgKnowledge.is_forbidden(edge.get_node1(), edge.get_node2()):
+                    self.cg.G.remove_edge(edge)
+                    self.cg.G.add_directed_edge(edge.get_node2(), edge.get_node1())
+                elif self.bgKnowledge.is_required(edge.get_node2(), edge.get_node1()):
+                    self.cg.G.remove_edge(edge)
+                    self.cg.G.add_directed_edge(edge.get_node2(), edge.get_node1())
+                elif self.bgKnowledge.is_required(edge.get_node1(), edge.get_node2()):
+                    self.cg.G.remove_edge(edge)
+                    self.cg.G.add_directed_edge(edge.get_node1(), edge.get_node2())
+
 
     def maxp(self, priority):
         """
